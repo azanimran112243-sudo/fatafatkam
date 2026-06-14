@@ -1,0 +1,2166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fatafat Kam – Home Services at Your Door</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== DESIGN TOKENS ===== */
+  :root {
+    --black:    #363636;
+    --orange:   #F58F1F;
+    --green:    #457534;
+    --grey:     #7D8285;
+    --white:    #FFFFFF;
+    --off-white:#F8F6F2;
+    --light-grey:#EBEBEB;
+    --dark-bg:  #1E1E1E;
+    --orange-dim:#c97410;
+    --green-dim: #345a27;
+
+    --font-display: 'Playfair Display', serif;
+    --font-ui:      'Space Grotesk', sans-serif;
+    --font-body:    'Inter', sans-serif;
+
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 40px;
+
+    --shadow-card: 0 4px 24px rgba(54,54,54,0.10);
+    --shadow-hover: 0 12px 40px rgba(54,54,54,0.18);
+    --shadow-orange: 0 8px 32px rgba(245,143,31,0.25);
+
+    --transition: 0.28s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ===== RESET ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: var(--font-body);
+    color: var(--black);
+    background: var(--off-white);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { text-decoration: none; color: inherit; }
+  img { display: block; max-width: 100%; }
+  button { cursor: pointer; border: none; background: none; font-family: inherit; }
+  ul { list-style: none; }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--off-white); }
+  ::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 99px; }
+
+  /* ===== TOP ANNOUNCEMENT BAR ===== */
+  .announce-bar {
+    background: var(--black);
+    color: var(--white);
+    text-align: center;
+    padding: 10px 20px;
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    position: relative;
+    overflow: hidden;
+  }
+  .announce-bar::after {
+    content: '';
+    position: absolute;
+    left: -100%;
+    top: 0; bottom: 0;
+    width: 60%;
+    background: linear-gradient(90deg, transparent, rgba(245,143,31,0.12), transparent);
+    animation: shimmer 3s infinite;
+  }
+  @keyframes shimmer { to { left: 200%; } }
+  .announce-text { position: relative; z-index: 1; }
+  .announce-text .dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: var(--orange);
+    border-radius: 50%;
+    margin: 0 8px;
+    vertical-align: middle;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+  /* ===== NAVBAR ===== */
+  .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1.5px solid var(--light-grey);
+    transition: box-shadow var(--transition);
+  }
+  .navbar.scrolled { box-shadow: 0 4px 24px rgba(54,54,54,0.08); }
+  .nav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 28px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  /* Logo */
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+  }
+  .logo-img {
+  height: 48px; /* Adjust this value as needed */
+  width: auto;
+  object-fit: contain;
+  transition: transform var(--transition);
+}
+.logo-wrap:hover .logo-img { transform: scale(1.04); }
+ 
+
+  /* Location badge */
+  .nav-location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--off-white);
+    border: 1.5px solid var(--light-grey);
+    border-radius: var(--radius-xl);
+    padding: 6px 14px;
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--grey);
+    cursor: pointer;
+    transition: all var(--transition);
+    white-space: nowrap;
+  }
+  .nav-location:hover { border-color: var(--orange); color: var(--black); }
+  .nav-location .loc-icon { color: var(--orange); font-size: 0.9rem; }
+
+  /* Nav links */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-left: auto;
+  }
+  .nav-links a {
+    font-family: var(--font-ui);
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--grey);
+    transition: color var(--transition);
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0; right: 0;
+    height: 2px;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition);
+    border-radius: 99px;
+  }
+  .nav-links a:hover { color: var(--black); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  .nav-cta {
+    background: var(--orange);
+    color: var(--white) !important;
+    padding: 9px 22px;
+    border-radius: var(--radius-xl);
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all var(--transition) !important;
+    box-shadow: var(--shadow-orange);
+  }
+  .nav-cta::after { display: none !important; }
+  .nav-cta:hover { background: var(--orange-dim) !important; transform: translateY(-1px); box-shadow: 0 12px 32px rgba(245,143,31,0.35) !important; }
+
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background var(--transition);
+    margin-left: auto;
+  }
+  .hamburger:hover { background: var(--light-grey); }
+  .hamburger span {
+    display: block;
+    width: 22px; height: 2px;
+    background: var(--black);
+    border-radius: 99px;
+    transition: all var(--transition);
+  }
+  .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.active span:nth-child(2) { opacity: 0; }
+  .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--white);
+    z-index: 999;
+    padding: 100px 32px 40px;
+    flex-direction: column;
+    gap: 8px;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+  .mobile-menu.open { transform: translateX(0); }
+  .mobile-menu a {
+    font-family: var(--font-ui);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--black);
+    padding: 14px 0;
+    border-bottom: 1px solid var(--light-grey);
+    display: block;
+    transition: color var(--transition);
+  }
+  .mobile-menu a:hover { color: var(--orange); }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: var(--black);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+  }
+  /* Geometric background texture */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,143,31,0.15) 0%, transparent 70%);
+    top: -200px; right: -200px;
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(69,117,52,0.12) 0%, transparent 70%);
+    bottom: -150px; left: -100px;
+  }
+  .hero-grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 80px 28px;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 60px;
+    align-items: center;
+    width: 100%;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(245,143,31,0.12);
+    border: 1px solid rgba(245,143,31,0.3);
+    color: var(--orange);
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: var(--radius-xl);
+    margin-bottom: 24px;
+  }
+  .hero-eyebrow .blink {
+    width: 7px; height: 7px;
+    background: var(--orange);
+    border-radius: 50%;
+    animation: blink 1.2s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  .hero-h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.8rem, 5.5vw, 5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+  .hero-h1 .accent { color: var(--orange); }
+  .hero-h1 .green-accent { color: #6ab34a; }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.7;
+    max-width: 500px;
+    margin-bottom: 40px;
+    font-weight: 300;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    background: var(--orange);
+    color: var(--white);
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 14px 32px;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-orange);
+    transition: all var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  }
+  .btn-primary:hover {
+    background: var(--orange-dim);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px rgba(245,143,31,0.4);
+  }
+  .btn-secondary {
+    color: rgba(255,255,255,0.8);
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 4px;
+    border-bottom: 1.5px solid rgba(255,255,255,0.2);
+    transition: all var(--transition);
+  }
+  .btn-secondary:hover { color: var(--white); border-color: var(--orange); }
+
+  /* Hero stats */
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    margin-top: 48px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .stat { }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+  }
+  .stat-num .stat-plus { color: var(--orange); }
+  .stat-label {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.45);
+    margin-top: 4px;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+  }
+
+  /* Hero search card */
+  .hero-search-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    animation: floatCard 5s ease-in-out infinite;
+  }
+  @keyframes floatCard {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  .card-label {
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 16px;
+  }
+  .hero-search-input {
+    display: flex;
+    align-items: center;
+    background: var(--off-white);
+    border: 2px solid var(--light-grey);
+    border-radius: var(--radius-md);
+    padding: 0 16px;
+    gap: 10px;
+    transition: border-color var(--transition);
+    margin-bottom: 16px;
+  }
+  .hero-search-input:focus-within { border-color: var(--orange); }
+  .hero-search-input input {
+    flex: 1;
+    padding: 14px 0;
+    background: none;
+    border: none;
+    outline: none;
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    color: var(--black);
+  }
+  .hero-search-input .si-icon { color: var(--grey); font-size: 1.1rem; }
+  .search-btn {
+    width: 100%;
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 13px;
+    border-radius: var(--radius-md);
+    transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .search-btn:hover { background: var(--orange); transform: translateY(-1px); }
+  .quick-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip {
+    background: var(--off-white);
+    border: 1.5px solid var(--light-grey);
+    border-radius: var(--radius-xl);
+    padding: 5px 12px;
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--grey);
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .chip:hover { border-color: var(--orange); color: var(--orange); background: rgba(245,143,31,0.05); }
+  .chip.active { border-color: var(--orange); color: var(--orange); background: rgba(245,143,31,0.08); }
+
+  /* ===== TRUST STRIP ===== */
+  .trust-strip {
+    background: var(--white);
+    border-bottom: 1.5px solid var(--light-grey);
+    padding: 20px 28px;
+    overflow: hidden;
+  }
+  .trust-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-ui);
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--grey);
+    white-space: nowrap;
+  }
+  .trust-item .t-icon {
+    width: 34px; height: 34px;
+    background: rgba(245,143,31,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: var(--orange);
+    flex-shrink: 0;
+  }
+
+  /* ===== SECTIONS COMMON ===== */
+  .section {
+    padding: 80px 28px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .section-header {
+    margin-bottom: 48px;
+  }
+  .section-eyebrow {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 700;
+    color: var(--black);
+    line-height: 1.15;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+  .section-sub {
+    color: var(--grey);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    max-width: 520px;
+  }
+  .section-header.centered {
+    text-align: center;
+  }
+  .section-header.centered .section-sub { margin: 0 auto; }
+
+  /* ===== SEARCH BAR (main) ===== */
+  .search-section {
+    background: var(--white);
+    padding: 40px 28px;
+    border-bottom: 1.5px solid var(--light-grey);
+    position: relative;
+    top: 72px;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    
+  }
+  .search-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .main-search {
+    display: flex;
+    align-items: center;
+    background: var(--off-white);
+    border: 2px solid var(--light-grey);
+    border-radius: var(--radius-xl);
+     position: static;
+    padding: 6px 6px 6px 24px;
+    gap: 12px;
+    transition: all var(--transition);
+    box-shadow: var(--shadow-card);
+    z-index: 200;
+  }
+  .main-search:focus-within {
+    border-color: var(--orange);
+    box-shadow: 0 4px 24px rgba(245,143,31,0.15);
+  }
+  .main-search .ms-icon { color: var(--grey); font-size: 1.2rem; flex-shrink: 0; }
+  .main-search input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    color: var(--black);
+    padding: 10px 0;
+  }
+  .main-search input::placeholder { color: var(--grey); }
+  .ms-btn {
+    background: var(--orange);
+    color: var(--white);
+    font-family: var(--font-ui);
+    font-size: 0.88rem;
+    font-weight: 700;
+    padding: 12px 26px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all var(--transition);
+    white-space: nowrap;
+    box-shadow: var(--shadow-orange);
+    flex-shrink: 0;
+  }
+  .ms-btn:hover { background: var(--orange-dim); transform: scale(1.02); }
+
+  /* Search results dropdown */
+  .search-results {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0; right: 0;
+    background: var(--white);
+    border: 1.5px solid var(--light-grey);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-hover);
+    max-height: 320px;
+    overflow-y: auto;
+    display: none;
+    z-index: 200;
+  }
+  .search-results.open { display: block; }
+  .sr-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background var(--transition);
+    border-bottom: 1px solid var(--light-grey);
+  }
+  .sr-item:last-child { border-bottom: none; }
+  .sr-item:hover { background: var(--off-white); }
+  .sr-item .sr-icon { font-size: 1.2rem; }
+  .sr-item .sr-name { font-family: var(--font-ui); font-size: 0.88rem; font-weight: 600; color: var(--black); }
+  .sr-item .sr-cat { font-size: 0.75rem; color: var(--grey); margin-top: 2px; }
+  .sr-empty { padding: 24px 20px; text-align: center; color: var(--grey); font-size: 0.88rem; font-family: var(--font-ui); }
+
+  /* ===== CATEGORY FILTER ===== */
+  .categories-bar {
+    background: var(--white);
+    padding: 0 28px 0;
+    border-bottom: 1.5px solid var(--light-grey);
+  }
+  .cat-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 0;
+  }
+  .cat-inner::-webkit-scrollbar { display: none; }
+  .cat-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 22px;
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--grey);
+    cursor: pointer;
+    border-bottom: 2.5px solid transparent;
+    transition: all var(--transition);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .cat-tab:hover { color: var(--black); }
+  .cat-tab.active { color: var(--orange); border-bottom-color: var(--orange); font-weight: 600; }
+  .cat-tab .ct-icon { font-size: 1rem; }
+
+  /* ===== SERVICE CARDS GRID ===== */
+  .services-section {
+    background: var(--off-white);
+    padding: 60px 0;
+  }
+  .services-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  /* SERVICE CARD */
+  .service-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    transition: all var(--transition);
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    border: 1.5px solid transparent;
+  }
+  .service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--orange);
+  }
+  .service-card:hover .card-icon-wrap { background: var(--orange); }
+  .service-card:hover .card-icon-wrap .ci { color: var(--white); }
+  .service-card:hover .card-arrow { opacity: 1; transform: translateX(0); }
+
+  /* Badge on card */
+  .card-badge {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: var(--green);
+    color: var(--white);
+    font-family: var(--font-ui);
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: var(--radius-xl);
+  }
+  .card-badge.hot { background: var(--orange); }
+  .card-badge.new-badge { background: var(--green); }
+
+  .card-img-area {
+    height: 160px;
+    background: linear-gradient(135deg, var(--black) 0%, #2a2a2a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-img-area::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 70%, rgba(245,143,31,0.18), transparent 60%);
+  }
+  .card-icon-wrap {
+    width: 72px; height: 72px;
+    background: rgba(255,255,255,0.08);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition);
+    position: relative;
+    z-index: 1;
+    border: 1.5px solid rgba(255,255,255,0.1);
+  }
+  .ci {
+    font-size: 2rem;
+    color: var(--orange);
+    transition: color var(--transition);
+  }
+
+  .card-body {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .card-cat {
+    font-family: var(--font-ui);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 6px;
+  }
+  .card-title {
+    font-family: var(--font-ui);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+  .card-desc {
+    font-size: 0.82rem;
+    color: var(--grey);
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 16px;
+  }
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--light-grey);
+  }
+  .card-price {
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--black);
+  }
+  .card-price span { font-size: 0.75rem; font-weight: 400; color: var(--grey); }
+  .card-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--black);
+    margin-left: auto;
+  }
+  .star { color: var(--orange); }
+
+  .card-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .btn-order-now {
+    flex: 1;
+    background: var(--orange);
+    color: var(--white);
+    font-family: var(--font-ui);
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 10px 16px;
+    border-radius: var(--radius-md);
+    text-align: center;
+    transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: var(--shadow-orange);
+  }
+  .btn-order-now:hover { background: var(--orange-dim); transform: translateY(-1px); }
+  .btn-details {
+    padding: 10px 14px;
+    border: 1.5px solid var(--light-grey);
+    border-radius: var(--radius-md);
+    font-family: var(--font-ui);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--black);
+    transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .btn-details:hover { border-color: var(--black); background: var(--black); color: var(--white); }
+
+  .card-arrow {
+    position: absolute;
+    bottom: 20px; right: 20px;
+    width: 28px; height: 28px;
+    background: var(--orange);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: all var(--transition);
+  }
+
+
+
+  /* ===== HOW IT WORKS ===== */
+  .how-section {
+    background: var(--black);
+    padding: 80px 28px;
+  }
+  .how-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .how-section .section-title { color: var(--white); }
+  .how-section .section-sub { color: rgba(255,255,255,0.5); }
+  .how-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-top: 56px;
+    position: relative;
+  }
+  .how-steps::before {
+    content: '';
+    position: absolute;
+    top: 36px; left: 12.5%; right: 12.5%;
+    height: 1.5px;
+    background: linear-gradient(90deg, var(--orange), var(--green), var(--orange));
+    opacity: 0.3;
+  }
+  .how-step {
+    text-align: center;
+    padding: 32px 24px;
+    position: relative;
+  }
+  .step-num {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: rgba(245,143,31,0.08);
+    border: 2px solid rgba(245,143,31,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--orange);
+    position: relative;
+    z-index: 1;
+    transition: all var(--transition);
+  }
+  .how-step:hover .step-num {
+    background: var(--orange);
+    color: var(--white);
+    border-color: var(--orange);
+    transform: scale(1.1);
+  }
+  .step-title {
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+  .step-desc {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.65;
+  }
+
+  /* ===== WHY US ===== */
+  .why-section {
+    background: var(--white);
+  }
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .why-features {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .why-feat {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    padding: 20px;
+    border-radius: var(--radius-md);
+    transition: background var(--transition);
+    cursor: default;
+  }
+  .why-feat:hover { background: var(--off-white); }
+  .feat-icon {
+    width: 48px; height: 48px;
+    border-radius: var(--radius-sm);
+    background: rgba(245,143,31,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    transition: background var(--transition);
+  }
+  .why-feat:hover .feat-icon { background: var(--orange); }
+  .feat-title {
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 4px;
+  }
+  .feat-desc { font-size: 0.82rem; color: var(--grey); line-height: 1.65; }
+
+  /* Big visual */
+  .why-visual {
+    background: var(--off-white);
+    border-radius: var(--radius-xl);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .why-visual::before {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(245,143,31,0.06);
+    top: -100px; right: -100px;
+  }
+  .city-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--orange);
+    color: var(--white);
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: var(--radius-xl);
+    margin-bottom: 24px;
+  }
+  .city-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--white);
+    border: 1.5px solid var(--light-grey);
+    border-radius: var(--radius-xl);
+    padding: 6px 14px;
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--grey);
+    margin: 4px 4px 4px 0;
+    transition: all var(--transition);
+    cursor: default;
+  }
+  .city-tag:hover { border-color: var(--orange); color: var(--orange); }
+  .why-number {
+    margin-top: 32px;
+    padding-top: 28px;
+    border-top: 1.5px solid var(--light-grey);
+    display: flex;
+    gap: 32px;
+  }
+  .wn-item {}
+  .wn-num {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--black);
+    line-height: 1;
+  }
+  .wn-num .wn-plus { color: var(--orange); }
+  .wn-label { font-size: 0.75rem; color: var(--grey); margin-top: 4px; }
+
+  /* ===== APP DOWNLOAD BANNER ===== */
+  .app-banner {
+    background: linear-gradient(135deg, var(--green) 0%, #2e5020 100%);
+    padding: 60px 28px;
+    text-align: center;
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .app-banner::before {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    top: -200px; right: -100px;
+  }
+  .app-banner-inner { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+  .app-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: 14px;
+    line-height: 1.15;
+  }
+  .app-sub { font-size: 0.95rem; color: rgba(255,255,255,0.75); margin-bottom: 32px; line-height: 1.6; }
+  .app-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .app-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.25);
+    color: var(--white);
+    padding: 12px 22px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all var(--transition);
+    backdrop-filter: blur(8px);
+  }
+  .app-btn:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+  .app-btn .ab-icon { font-size: 1.3rem; }
+
+ 
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--dark-bg);
+    color: var(--white);
+    padding: 64px 28px 28px;
+  }
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+  .footer-brand {}
+  .footer-logo-text {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin-bottom: 14px;
+    line-height: 1;
+  }
+  .footer-logo-text .f-orange { color: var(--orange); }
+  .footer-logo-text .f-grey { color: var(--grey); font-size: 1rem; font-family: var(--font-ui); font-weight: 400; display: block; margin-top: 2px; }
+  .footer-desc { font-size: 0.82rem; color: rgba(255,255,255,0.45); line-height: 1.65; margin-bottom: 20px; max-width: 280px; }
+  .footer-socials { display: flex; gap: 10px; }
+  .social-btn {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.6);
+    transition: all var(--transition);
+    cursor: pointer;
+  }
+  .social-btn:hover { background: var(--orange); color: var(--white); }
+  .footer-col-title {
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 18px;
+  }
+
+  
+  .footer-links { display: flex; flex-direction: column; gap: 12px; }
+  .footer-links a {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+    transition: color var(--transition);
+  }
+  .footer-links a:hover { color: var(--orange); }
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+  .footer-badges { display: flex; gap: 8px; }
+  .f-badge {
+    background: rgba(255,255,255,0.06);
+    border-radius: var(--radius-sm);
+    padding: 4px 10px;
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.35);
+    font-family: var(--font-ui);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  /* ===== FLOATING WHATSAPP BTN ===== */
+  .float-wa {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 999;
+    width: 56px; height: 56px;
+    background: #25D366;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 8px 28px rgba(37,211,102,0.4);
+    transition: all var(--transition);
+    cursor: pointer;
+  }
+  .float-wa:hover { transform: scale(1.1); box-shadow: 0 12px 40px rgba(37,211,102,0.55); }
+  .float-wa::before {
+    content: 'Need Help?';
+    position: absolute;
+    right: 68px;
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition);
+  }
+  .float-wa:hover::before { opacity: 1; }
+
+  /* ===== BACK TO TOP ===== */
+  .back-top {
+    position: fixed;
+    bottom: 28px;
+    left: 28px;
+    z-index: 999;
+    width: 44px; height: 44px;
+    background: var(--white);
+    border: 1.5px solid var(--light-grey);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: var(--black);
+    box-shadow: var(--shadow-card);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all var(--transition);
+  }
+  .back-top.visible { opacity: 1; transform: translateY(0); }
+  .back-top:hover { background: var(--black); color: var(--white); border-color: var(--black); }
+
+  /* ===== SCROLL ANIMATIONS ===== */
+  .fade-up {
+    opacity: 0;    transform: translateY(30px);
+    transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1);
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* Stagger children */
+  .stagger-children > * { opacity: 0; transform: translateY(24px); }
+  .stagger-children.visible > *:nth-child(1) { animation: fadeUp 0.5s forwards 0.1s; }
+  .stagger-children.visible > *:nth-child(2) { animation: fadeUp 0.5s forwards 0.2s; }
+  .stagger-children.visible > *:nth-child(3) { animation: fadeUp 0.5s forwards 0.3s; }
+  .stagger-children.visible > *:nth-child(4) { animation: fadeUp 0.5s forwards 0.4s; }
+  .stagger-children.visible > *:nth-child(5) { animation: fadeUp 0.5s forwards 0.5s; }
+  .stagger-children.visible > *:nth-child(6) { animation: fadeUp 0.5s forwards 0.6s; }
+  .stagger-children.visible > *:nth-child(n+7) { animation: fadeUp 0.5s forwards 0.7s; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  /* ===== DYNAMIC MODAL ===== */
+.service-modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  z-index: 3000; display: flex; align-items: center; justify-content: center;
+  padding: 20px; opacity: 0; pointer-events: none;
+  transition: opacity var(--transition);
+}
+.service-modal-overlay.active { opacity: 1; pointer-events: all; }
+.service-modal-content {
+  background: var(--white); border-radius: var(--radius-lg);
+  width: 100%; max-width: 600px; padding: 40px; position: relative;
+  transform: translateY(30px); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.2);
+}
+.service-modal-overlay.active .service-modal-content { transform: translateY(0); }
+.close-modal-btn {
+  position: absolute; top: 16px; right: 16px; width: 36px; height: 36px;
+  border-radius: 50%; background: var(--off-white); font-size: 1.2rem;
+  display: flex; align-items: center; justify-content: center; color: var(--black);
+  transition: all var(--transition);
+}
+.close-modal-btn:hover { background: var(--orange); color: var(--white); }
+.modal-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+.modal-icon { font-size: 2.5rem; }
+.modal-title { font-family: var(--font-display); font-size: 2rem; font-weight: 700; line-height: 1.1; }
+.modal-cat { font-family: var(--font-ui); color: var(--orange); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;}
+.modal-desc { font-size: 1rem; color: var(--grey); line-height: 1.6; margin-bottom: 32px; }
+.modal-btn { background: var(--black); color: var(--white); width: 100%; padding: 16px; border-radius: var(--radius-md); font-family: var(--font-ui); font-size: 1rem; font-weight: 700; transition: all var(--transition); display: block; text-align: center; }
+.modal-btn:hover { background: var(--orange); transform: translateY(-2px); box-shadow: var(--shadow-orange); }
+
+
+
+  .toast.removing { animation: toastOut 0.3s forwards; }
+  @keyframes toastIn { from { opacity:0; transform:translateX(20px); } to { opacity:1; transform:translateX(0); } }
+  @keyframes toastOut { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(20px); } }
+  .toast-icon { font-size: 1.1rem; }
+  .toast-msg { flex: 1; color: var(--black); font-weight: 500; line-height: 1.4; }
+
+  /* ===== SECTION DIVIDERS ===== */
+  .divider {
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--light-grey), transparent);
+    margin: 0 28px;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 1024px) {
+    .hero-content { grid-template-columns: 1fr; gap: 40px; }
+    .hero-search-card { max-width: 500px; }
+    .why-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .how-steps { grid-template-columns: repeat(2, 1fr); }
+    .how-steps::before { display: none; }
+    .testi-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .mobile-menu { display: flex; }
+    .hero-stats { flex-wrap: wrap; gap: 20px; }
+    .hero-content { padding: 60px 0; }
+    .services-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+    .how-steps { grid-template-columns: 1fr; }
+    .testi-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; }
+    .trust-inner { gap: 20px; }
+    .search-section { position: static; }
+    .categories-bar { position: static; }
+  }
+  @media (max-width: 480px) {
+    .section { padding: 56px 20px; }
+    .how-section, .app-banner, .promo-strip { padding: 56px 20px; }
+    .footer-inner { padding: 0; }
+    .hero-h1 { font-size: 2.4rem; }
+  }
+
+  /* ===== CATEGORY COLOR ACCENTS ===== */
+  [data-cat="electrical"] .card-img-area { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
+  [data-cat="plumbing"] .card-img-area { background: linear-gradient(135deg, #0d1b2a 0%, #1b2838 100%); }
+  [data-cat="carpentry"] .card-img-area { background: linear-gradient(135deg, #2d1b00 0%, #3d2600 100%); }
+  [data-cat="cleaning"] .card-img-area { background: linear-gradient(135deg, #0a1628 0%, #0d2040 100%); }
+  [data-cat="skincare"] .card-img-area { background: linear-gradient(135deg, #1a0a1a 0%, #2a1230 100%); }
+  [data-cat="auto"] .card-img-area { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); }
+  [data-cat="construction"] .card-img-area { background: linear-gradient(135deg, #1a1200 0%, #2a1e00 100%); }
+  [data-cat="ac"] .card-img-area { background: linear-gradient(135deg, #001a1a 0%, #002626 100%); }
+</style>
+</head>
+<body>
+
+
+<div class="service-modal-overlay" id="serviceModal" onclick="closeService()">
+  <div class="service-modal-content" onclick="event.stopPropagation()">
+    <button class="close-modal-btn" onclick="closeService()">✕</button>
+    <div id="modalDynamicContent"></div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <!-- SVG LOGO (reconstructed from uploaded PNG style) -->
+    <a href="index.html" class="logo-wrap">
+  <img src="logo.png" alt="Fatafat Kam" class="logo-img">
+</a>
+
+    <div class="nav-location">
+      <span class="loc-icon">📍</span>
+      Lahore, Pakistan
+    </div>
+
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#why-us">Why Us</a>
+     
+     <a href="https://wa.me/923004285424?text=Hello!%20I%20want%20to%20book%20a%20service%20on%20Fatafat%20Kam." target="_blank" rel="noopener noreferrer" class="nav-cta">💬 Book Now</a>
+    </div>
+
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services" onclick="closeMobile()">🛠️ Services</a>
+  <a href="#how-it-works" onclick="closeMobile()">📋 How It Works</a>
+  <a href="#why-us" onclick="closeMobile()">⭐ Why Us</a>
+
+  <a href="https://wa.me/923004285424?text=Hello!%20I%20want%20to%20book%20a%20service%20on%20Fatafat%20Kam." target="_blank" rel="noopener noreferrer" onclick="closeMobile()" style="color:var(--orange);">� Book Now</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-grid-lines"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-eyebrow"><span class="blink"></span>Now Live in Lahore</div>
+      <h1 class="hero-h1">
+        Every Service,<br>
+        <span class="accent">Right at</span><br>
+        <span class="green-accent">Your Door.</span>
+      </h1>
+      <p class="hero-sub">
+        Electricians, plumbers, beauticians, car mechanics — all vetted, all insured, all available on demand. No more waiting. No more going out. Fatafat Kam karao.
+      </p>
+      <div class="hero-actions">
+        <a href="#services" class="btn-primary">🔍 Browse Services ↓</a>
+        <a href="https://wa.me/923004285424?text=Hello!%20I%20want%20to%20book%20a%20service%20on%20Fatafat%20Kam." target="_blank" rel="noopener noreferrer" class="btn-secondary">� Book Now →</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num"> 50<span class="stat-plus">+</span></div>
+          <div class="stat-label"> Service Types</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">4.9<span class="stat-plus">★</span></div>
+          <div class="stat-label">Average Rating</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">60<span class="stat-plus">m</span></div>
+          <div class="stat-label">Avg Arrival Time</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK SEARCH CARD -->
+    <div class="hero-search-card">
+      <div class="card-label">🔎 Find a Service</div>
+      <div class="hero-search-input">
+        <span class="si-icon">🔍</span>
+        <input type="text" id="heroSearchInput" placeholder="e.g. Plumber, AC Repair…" autocomplete="off" onkeyup="heroSearch(this.value)">
+      </div>
+      <button class="search-btn" onclick="scrollToSearch()">
+        <span>Find Services in Lahore</span> →
+      </button>
+      <div class="card-label" style="margin-bottom:10px;">Popular Right Now</div>
+      <div class="quick-chips" id="quickChips">
+        <span class="chip" onclick="filterByChip('Electrical')">⚡ Electrical</span>
+        <span class="chip" onclick="filterByChip('Plumbing')">🔧 Plumbing</span>
+        <span class="chip" onclick="filterByChip('AC Repair')">❄️ AC Repair</span>
+        <span class="chip" onclick="filterByChip('Skincare')">💆 Skincare</span>
+        <span class="chip" onclick="filterByChip('Car Service')">🚗 Car Service</span>
+        <span class="chip" onclick="filterByChip('Carpentry')">🪚 Carpentry</span>
+        <span class="chip" onclick="filterByChip('Cleaning')">🧹 Cleaning</span>
+        <span class="chip" onclick="filterByChip('Construction')">🏗️ Construction</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="trust-inner">
+    <div class="trust-item"><div class="t-icon">✅</div> 100% Verified Professionals</div>
+    <div class="trust-item"><div class="t-icon">🛡️</div> Insured & Guaranteed Work</div>
+    <div class="trust-item"><div class="t-icon">⚡</div> Same-Day Service Available</div>
+    <div class="trust-item"><div class="t-icon">💳</div> Pay After Service Done</div>
+    <div class="trust-item"><div class="t-icon">📍</div> Serving All of Lahore</div>
+  </div>
+</div>
+
+<!-- SEARCH BAR (sticky) -->
+
+<div class="search-section" id="searchSection">
+  <div class="search-wrap" style="position:relative;">
+    
+    <div class="search-animated-frame">
+      <div class="main-search">
+        <span class="ms-icon">🔍</span>
+        <input type="text" id="mainSearch" placeholder="Search for any service — plumber, electrician, skincare, construction…" autocomplete="off" onkeyup="mainSearch(this.value)" oninput="mainSearch(this.value)">
+        <button class="ms-btn" onclick="triggerSearch()">Search →</button>
+      </div>
+    </div>
+    
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<!-- CATEGORY FILTER BAR -->
+<div class="categories-bar" id="services">
+  <div class="cat-inner" id="catBar">
+    <div class="cat-tab active" onclick="filterCat('all', this)"><span class="ct-icon">🏠</span>All Services</div>
+    <div class="cat-tab" onclick="filterCat('electrical', this)"><span class="ct-icon">⚡</span>Electrical</div>
+    <div class="cat-tab" onclick="filterCat('plumbing', this)"><span class="ct-icon">🔧</span>Plumbing</div>
+    <div class="cat-tab" onclick="filterCat('ac', this)"><span class="ct-icon">❄️</span>AC & Cooling</div>
+    <div class="cat-tab" onclick="filterCat('cleaning', this)"><span class="ct-icon">🧹</span>Cleaning</div>
+    <div class="cat-tab" onclick="filterCat('carpentry', this)"><span class="ct-icon">🪚</span>Carpentry</div>
+    <div class="cat-tab" onclick="filterCat('skincare', this)"><span class="ct-icon">💆</span>Beauty & Skin</div>
+    <div class="cat-tab" onclick="filterCat('auto', this)"><span class="ct-icon">🚗</span>Car Services</div>
+    <div class="cat-tab" onclick="filterCat('construction', this)"><span class="ct-icon">🏗️</span>Construction</div>
+  </div>
+</div>
+
+<!-- SERVICES GRID -->
+<div class="services-section">
+  <div class="services-inner">
+    <div class="section-header fade-up" style="padding-bottom:0;">
+      <span class="section-eyebrow">Our Services</span>
+      <h2 class="section-title">What Can We Help With?</h2>
+      <p class="section-sub">services at you door step.</p>
+    </div>
+
+    <div class="services-grid stagger-children" id="servicesGrid">
+
+      <!-- =============================================
+           ✏️ SERVICE CARDS — EDIT THESE FREELY
+           Each card has:
+           - data-cat: category for filtering
+           - data-search: keywords for search
+           - data-page: the page this card links to
+           Duplicate any card block to add more.
+           ============================================= -->
+
+      <!-- CARD 1 -->
+      <div class="service-card" data-cat="electrical" data-search="electrician wiring fan fitting switch socket repair lahore" onclick="openService('Electrician at Home')">
+        <span class="card-badge hot">🔥 Popular</span>
+        <div class="card-img-area">
+          <div class="card-icon-wrap"><span class="ci">⚡</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Electrical</div>
+          <div class="card-title">Electrician at Home</div>
+          <div class="card-desc">Add your service description here. What does this service include? Why should someone book it?</div>
+          <div class="card-meta">
+            <div class="card-price">Rs. ??? <span>starting</span></div>
+            <div class="card-rating"><span class="star">★</span> —</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-order-now" onclick="event.stopPropagation(); openService('Electrician at Home')">⚡ Quick Order</button>
+            <button class="btn-details" onclick="event.stopPropagation(); openService('Electrician at Home')">Details →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2 -->
+      <div class="service-card" data-cat="plumbing" data-search="plumber pipe leak tap bathroom kitchen repair" onclick="openService('Plumber at Home')">
+        <span class="card-badge new-badge">✨ New</span>
+        <div class="card-img-area">
+          <div class="card-icon-wrap"><span class="ci">🔧</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Plumbing</div>
+          <div class="card-title">Plumber at Home</div>
+          <div class="card-desc">Add your service description here. What does this service include? Why should someone book it?</div>
+          <div class="card-meta">
+            <div class="card-price">Rs. ??? <span>starting</span></div>
+            <div class="card-rating"><span class="star">★</span> —</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-order-now" onclick="event.stopPropagation(); openService('Plumber at Home')">⚡ Quick Order</button>
+            <button class="btn-details" onclick="event.stopPropagation(); openService('Plumber at Home')">Details →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 3 -->
+      <div class="service-card" data-cat="ac" data-search="ac repair installation gas filling split window air conditioner cooling" onclick="openService('AC Repair & Service')">
+        <div class="card-img-area">
+          <div class="card-icon-wrap"><span class="ci">❄️</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">AC & Cooling</div>
+          <div class="card-title">AC Repair & Service</div>
+          <div class="card-desc">Add your service description here. What does this service include? Why should someone book it?</div>
+          <div class="card-meta">
+            <div class="card-price">Rs. ??? <span>starting</span></div>
+            <div class="card-rating"><span class="star">★</span> —</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-order-now" onclick="event.stopPropagation(); openService('AC Repair & Service')">⚡ Quick Order</button>
+            <button class="btn-details" onclick="event.stopPropagation(); openService('AC Repair & Service')">Details →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 4 -->
+      <div class="service-card" data-cat="cleaning" data-search="home cleaning deep cleaning sofa carpet maid housekeeping" onclick="openService('Home Deep Cleaning')">
+        <div class="card-img-area">
+          <div class="card-icon-wrap"><span class="ci">🧹</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Cleaning</div>
+          <div class="card-title">Home Deep Cleaning</div>
+          <div class="card-desc">Add your service description here. What does this service include? Why should someone book it?</div>
+          <div class="card-meta">
+            <div class="card-price">Rs. ??? <span>starting</span></div>
+            <div class="card-rating"><span class="star">★</span> —</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-order-now" onclick="event.stopPropagation(); openService('Home Deep Cleaning')">⚡ Quick Order</button>
+            <button class="btn-details" onclick="event.stopPropagation(); openService('Home Deep Cleaning')">Details →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 5 -->
+      <div class="service-card" data-cat="carpentry" data-search="carpenter furniture repair door fitting wardrobe bed wood" onclick="openService('Carpenter at Home')">
+        <div class="card-img-area">
+          <div class="card-icon-wrap"><span class="ci">🪚</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Carpentry</div>
+          <div class="card-title">Carpenter at Home</div>
+          <div class="card-desc">Add your service description here. What does this service include? Why should someone book it?</div>
+          <div class="card-meta">
+            <div class="card-price">Rs. ??? <span>starting</span></div>
+            <div class="card-rating"><span class="star">★</span> —</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-order-now" onclick="event.stopPropagation(); openService('Carpenter at Home')">⚡ Quick Order</button>
+            <button class="btn-details" onclick="event.stopPropagation(); openService('Carpenter at Home')">Details →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 6 -->
+      <div class="service-card" data-cat="skincare" data-search="skincare facial massage beauty parlour makeup waxing hair threading" onclick="openService('Skincare at Home')">
+        <div class="card-img-area">
+          <div class="card-icon-wrap"><span class="ci">💆</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Beauty & Skincare</div>
+          <div class="card-title">Parlour at Home</div>
+          <div class="card-desc">Add your service description here. What does this service include? Why should someone book it?</div>
+          <div class="card-meta">
+            <div class="card-price">Rs. ??? <span>starting</span></div>
+            <div class="card-rating"><span class="star">★</span> —</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-order-now" onclick="event.stopPropagation(); openService('Beauty at Home')">⚡ Quick Order</button>
+            <button class="btn-details" onclick="event.stopPropagation(); openService('Beauty at Home')">Details →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 7 -->
+      <div class="service-card" data-cat="auto" data-search="car service mechanic oil change tyre puncture battery car wash detailing" onclick="openService('Car Mechanic at Home')">
+        <span class="card-badge hot">🔥 Popular</span>
+        <div class="card-img-area">
+          <div class="card-icon-wrap"><span class="ci">🚗</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Car Services</div>
+          <div class="card-title">Car Mechanic at Home</div>
+          <div class="card-desc">Add your service description here. What does this service include? Why should someone book it?</div>
+          <div class="card-meta">
+            <div class="card-price">Rs. ??? <span>starting</span></div>
+            <div class="card-rating"><span class="star">★</span> —</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-order-now" onclick="event.stopPropagation(); openService('Car Mechanic at Home')">⚡ Quick Order</button>
+            <button class="btn-details" onclick="event.stopPropagation(); openService('Car Mechanic at Home')">Details →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 8 -->
+      <div class="service-card" data-cat="construction" data-search="construction renovation paint tiles flooring wall repair masonry" onclick="openService('Home Renovation')">
+        <div class="card-img-area">
+          <div class="card-icon-wrap"><span class="ci">🏗️</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Construction</div>
+          <div class="card-title">Home Renovation</div>
+          <div class="card-desc">Add your service description here. What does this service include? Why should someone book it?</div>
+          <div class="card-meta">
+            <div class="card-price">Rs. ??? <span>starting</span></div>
+            <div class="card-rating"><span class="star">★</span> —</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-order-now" onclick="event.stopPropagation(); openService('Home Renovation')">⚡ Quick Order</button>
+            <button class="btn-details" onclick="event.stopPropagation(); openService('Home Renovation')">Details →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- =============================================
+           ➕ TO ADD A NEW SERVICE CARD, COPY THIS:
+
+      <div class="service-card" data-cat="CATEGORY" data-search="keyword1 keyword2 keyword3" onclick="openService('Service Title Here')">
+        <div class="card-img-area">
+          <div class="card-icon-wrap"><span class="ci">🔨</span></div>
+        </div>
+        <div class="card-body">
+          <div class="card-cat">Category Name</div>
+          <div class="card-title">Service Title Here</div>
+          <div class="card-desc">Describe what this service includes, duration, what's provided, and why people should book it.</div>
+          <div class="card-meta">
+            <div class="card-price">Rs. 500 <span>starting</span></div>
+            <div class="card-rating"><span class="star">★</span> 4.8</div>
+          </div>
+          <div class="card-actions">
+            <button class="btn-order-now" onclick="event.stopPropagation(); openService('Service Title Here')">⚡ Quick Order</button>
+            <button class="btn-details" onclick="event.stopPropagation(); openService('Service Title Here')">Details →</button>
+          </div>
+        </div>
+      </div>
+
+           CATEGORIES available: electrical, plumbing, ac, cleaning, carpentry, skincare, auto, construction
+           Add new categories by adding a .cat-tab in the categories bar above.
+           ============================================= -->
+
+
+    </div><!-- end services-grid -->
+
+    <div id="noResults" style="display:none; text-align:center; padding:48px 0; color:var(--grey); font-family:var(--font-ui);">
+      <div style="font-size:2.5rem; margin-bottom:12px;">🔍</div>
+      <div style="font-size:1rem; font-weight:600; color:var(--black); margin-bottom:6px;">No services found</div>
+      <div style="font-size:0.85rem;">Try a different keyword or browse all categories above.</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how-it-works">
+  <div class="how-inner">
+    <div class="section-header fade-up centered" style="color:white;">
+      <span class="section-eyebrow">The Process</span>
+      <h2 class="section-title" style="color:white;">Booking Takes 60 Seconds</h2>
+      <p class="section-sub" style="color:rgba(255,255,255,0.5); margin:0 auto;">No apps, no hassle, no waiting in lines. Just pick, book, and we come to you.</p>
+    </div>
+    <div class="how-steps stagger-children">
+      <div class="how-step">
+        <div class="step-num">1</div>
+        <div class="step-title">Choose Your Service</div>
+        <div class="step-desc">Browse our growing catalog of home services. Use the search or filter by category to find exactly what you need.</div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">2</div>
+        <div class="step-title">Select Date & Time</div>
+        <div class="step-desc">Pick a time that works for you — same-day, next day, or scheduled ahead. Morning to evening slots available.</div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">3</div>
+        <div class="step-title">We Confirm & Dispatch</div>
+        <div class="step-desc">You get a confirmation instantly. Our verified professional is dispatched to your address in Lahore.</div>
+      </div>
+      <div class="how-step">
+        <div class="step-num">4</div>
+        <div class="step-title">Pay After, Rate After</div>
+        <div class="step-desc"> Pay when the job is done, then leave a rating to help others in the community.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WHY US -->
+<section class="why-section" id="why-us">
+  <div class="section">
+    <div class="why-grid">
+      <div class="why-left fade-up">
+        <span class="section-eyebrow">Why Fatafat Kam</span>
+        <h2 class="section-title">Built by a Lahori.<br>Built for Lahories</h2>
+        <p class="section-sub" style="margin-bottom:36px;">We're not just a listing site. Every professional we send is background-checked, trained, and rated by real customers.</p>
+        <div class="why-features">
+          <div class="why-feat">
+            <div class="feat-icon">🔒</div>
+            <div>
+              <div class="feat-title">Fully Vetted Professionals</div>
+              <div class="feat-desc">Every worker passes a background check and skill test before we let them serve you at home.</div>
+            </div>
+          </div>
+          <div class="why-feat">
+            <div class="feat-icon">⏱️</div>
+            <div>
+              <div class="feat-title">On-Time Guarantee</div>
+              <div class="feat-desc">Our workers will reach you in no time.</div>
+            </div>
+          </div>
+          <div class="why-feat">
+            <div class="feat-icon">💰</div>
+            <div>
+              <div class="feat-title">Transparent Pricing</div>
+              <div class="feat-desc">The price you see is what you pay. No hidden fees, no surprise charges after the work is done.</div>
+            </div>
+          </div>
+        
+          </div>
+        </div>
+      </div>
+      <div class="why-right fade-up">
+        <div class="why-visual">
+          <div class="city-badge">📍 Serving Lahore</div>
+          <p style="font-family:var(--font-ui); font-size:0.88rem; color:var(--grey); margin-bottom:16px; line-height:1.6;">We cover every corner of Lahore — from DHA to Gulberg, Model Town to Johar Town.</p>
+          <div>
+            <span class="city-tag">📍 DHA</span>
+            <span class="city-tag">📍 Gulberg</span>
+            <span class="city-tag">📍 Model Town</span>
+            <span class="city-tag">📍 Johar Town</span>
+            <span class="city-tag">📍 Bahria Town</span>
+            <span class="city-tag">📍 Wapda Town</span>
+            <span class="city-tag">📍 Iqbal Town</span>
+            <span class="city-tag">📍 Faisal Town</span>
+            <span class="city-tag">📍 Cantt</span>
+            <span class="city-tag">📍 Garden Town</span>
+            <span class="city-tag">📍 Allama Iqbal Town</span>
+            <span class="city-tag">📍 + More Areas</span>
+          </div>
+          <div class="why-number">
+            <div class="wn-item">
+              <div class="wn-num">100<span class="wn-plus">%</span></div>
+              <div class="wn-label">Verified Pros</div>
+            </div>
+            <div class="wn-item">
+              <div class="wn-num">4.9<span class="wn-plus">★</span></div>
+              <div class="wn-label">Customer Rating</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APP BANNER -->
+<section class="app-banner">
+  <div class="app-banner-inner">
+    <h2 class="app-h2">📱 App Coming Soon — Get Notified</h2>
+    <p class="app-sub">We're building the Fatafat Kam app for iOS and Android. Register your number below and be first in line when we launch.</p>
+    <div class="app-btns">
+      
+      <a href="https://wa.me/923001234567" class="app-btn" target="_blank"><span class="ab-icon">💬</span> WhatsApp Us</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo-text">
+          Fatafat <span class="f-orange">Kam</span>
+          <span class="f-grey">Home Services · Lahore</span>
+        </div>
+        <p class="footer-desc">Pakistan's growing on-demand home service platform. Every service from skincare to construction, delivered to your door.</p>
+        <div class="footer-socials">
+          <div class="social-btn" title="Facebook">f</div>
+          <div class="social-btn" title="Instagram">📸</div>
+          <div class="social-btn" title="WhatsApp">💬</div>
+          <div class="social-btn" title="TikTok">▶</div>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <div class="footer-links">
+  <a href="javascript:void(0)" onclick="openService('Electrician at Home')">Electrical Work</a>
+  <a href="javascript:void(0)" onclick="openService('Plumber at Home')">Plumbing</a>
+  <a href="javascript:void(0)" onclick="openService('AC Repair & Service')">AC Repair</a>
+  <a href="javascript:void(0)" onclick="openService('Home Deep Cleaning')">Home Cleaning</a>
+  <a href="javascript:void(0)" onclick="openService('Carpenter at Home')">Carpentry</a>
+  <a href="javascript:void(0)" onclick="openService('Beauty at Home')">Beauty & Skincare</a>
+  <a href="javascript:void(0)" onclick="openService('Car Mechanic at Home')">Car Services</a>
+  <a href="javascript:void(0)" onclick="openService('Home Renovation')">Construction</a>
+</div>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <div class="footer-links">
+          <a href="#">About Fatafat Kam</a>
+          
+          <a href="#">Blog</a>
+          <a href="#">Careers</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact Us</div>
+        <div class="footer-links">
+          <a href="tel:+923001234567">📞 0300-4285424</a>
+          <a href="mailto:hello@fatafatkam.pk">✉️ fatafatkam@gmail.com</a>
+          <a href="#">📍 Lahore, Pakistan</a>
+          <a href="#">💬 WhatsApp Chat</a>
+          <a href="#">🕐 24/7 Daily</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 Fatafat Kam. All rights reserved. Lahore, Pakistan.</div>
+      <div class="footer-badges">
+        <span class="f-badge">🔒 Secure</span>
+        <span class="f-badge">✅ Verified</span>
+        <span class="f-badge">🇵🇰 Made in Pakistan</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING WHATSAPP -->
+<a href="https://wa.me/923001234567?text=Hi! I want to book a service from Fatafat Kam." target="_blank" class="float-wa" title="Chat on WhatsApp">💬</a>
+
+<!-- BACK TO TOP -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+// ===== ALL SERVICE DATA (synced with cards — used for search) =====
+const ALL_SERVICES = [
+  { name: 'Electrician at Home',  cat: 'electrical',    icon: '⚡', page: 'electrician.html',    keywords: 'electrician wiring fan fitting switch socket repair' },
+  { name: 'Plumber at Home',      cat: 'plumbing',      icon: '🔧', page: 'plumber.html',         keywords: 'plumber pipe leak tap bathroom kitchen' },
+  { name: 'AC Repair & Service',  cat: 'ac',            icon: '❄️', page: 'ac-repair.html',       keywords: 'ac repair installation gas filling split cooling' },
+  { name: 'Home Deep Cleaning',   cat: 'cleaning',      icon: '🧹', page: 'cleaning.html',        keywords: 'home cleaning deep sofa carpet maid housekeeping' },
+  { name: 'Carpenter at Home',    cat: 'carpentry',     icon: '🪚', page: 'carpentry.html',       keywords: 'carpenter furniture repair door fitting wardrobe bed' },
+  { name: 'Beauty at Home',       cat: 'skincare',      icon: '💆', page: 'skincare.html',        keywords: 'skincare facial massage beauty parlour makeup waxing hair' },
+  { name: 'Car Mechanic at Home', cat: 'auto',          icon: '🚗', page: 'car-service.html',     keywords: 'car mechanic oil change tyre puncture battery wash' },
+  { name: 'Home Renovation',      cat: 'construction',  icon: '🏗️', page: 'construction.html',   keywords: 'construction renovation paint tiles flooring wall masonry' },
+];
+
+// ===== NAVBAR SCROLL =====
+window.addEventListener('scroll', () => {
+  const nb = document.getElementById('navbar');
+  nb.classList.toggle('scrolled', window.scrollY > 20);
+  document.getElementById('backTop').classList.toggle('visible', window.scrollY > 400);
+});
+
+// ===== HAMBURGER MENU =====
+const ham = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+ham.addEventListener('click', () => {
+  ham.classList.toggle('active');
+  mobileMenu.classList.toggle('open');
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+});
+function closeMobile() {
+  ham.classList.remove('active');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ===== SCROLL TO SEARCH =====
+function scrollToSearch() {
+  document.getElementById('searchSection').scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => document.getElementById('mainSearch').focus(), 600);
+}
+
+// ===== HERO SEARCH =====
+function heroSearch(val) {
+  if (val.trim().length < 2) return;
+  document.getElementById('mainSearch').value = val;
+  mainSearch(val);
+}
+
+// ===== MAIN SEARCH ENGINE =====
+let searchTimeout;
+function mainSearch(val) {
+  clearTimeout(searchTimeout);
+  const q = val.trim().toLowerCase();
+  const resultsEl = document.getElementById('searchResults');
+
+  if (q.length < 2) {
+    resultsEl.classList.remove('open');
+    showAllCards();
+    return;
+  }
+
+  searchTimeout = setTimeout(() => {
+    const matches = ALL_SERVICES.filter(s =>
+      s.name.toLowerCase().includes(q) ||
+      s.keywords.includes(q) ||
+      s.cat.includes(q)
+    );
+    renderSearchResults(matches, q, resultsEl);
+    filterCardsBySearch(q);
+  }, 150);
+}
+
+function renderSearchResults(matches, q, el) {
+  if (matches.length === 0) {
+    el.innerHTML = `<div class="sr-empty">No services found for "<strong>${q}</strong>".<br>Try different keywords.</div>`;
+  } else {
+    el.innerHTML = matches.map(s => `
+      <div class="sr-item" onclick="goToService('${s.page}')">
+        <span class="sr-icon">${s.icon}</span>
+        <div>
+          <div class="sr-name">${highlight(s.name, q)}</div>
+          <div class="sr-cat">${s.cat.charAt(0).toUpperCase() + s.cat.slice(1)}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+  el.classList.add('open');
+}
+
+function highlight(text, q) {
+  const re = new RegExp(`(${q})`, 'gi');
+  return text.replace(re, '<mark style="background:rgba(245,143,31,0.2);color:var(--orange);border-radius:3px;padding:0 2px;">$1</mark>');
+}
+
+function filterCardsBySearch(q) {
+  const cards = document.querySelectorAll('#servicesGrid .service-card:not(.add-card)');
+  let visible = 0;
+  cards.forEach(card => {
+    const searchData = card.dataset.search || '';
+    const title = card.querySelector('.card-title')?.textContent.toLowerCase() || '';
+    const cat = card.dataset.cat || '';
+    const match = searchData.includes(q) || title.includes(q) || cat.includes(q);
+    card.style.display = match ? '' : 'none';
+    if (match) visible++;
+  });
+  document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+  // Also show add-card
+  const addCard = document.querySelector('.add-card');
+  if (addCard) addCard.style.display = visible === 0 ? 'none' : '';
+}
+
+function showAllCards() {
+  document.querySelectorAll('#servicesGrid .service-card').forEach(c => c.style.display = '');
+  document.getElementById('noResults').style.display = 'none';
+}
+
+// Close search results on outside click
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-wrap') && !e.target.closest('.hero-search-card')) {
+    document.getElementById('searchResults').classList.remove('open');
+  }
+});
+
+function triggerSearch() {
+  const val = document.getElementById('mainSearch').value;
+  if (val.trim()) filterCardsBySearch(val.trim().toLowerCase());
+  document.getElementById('services').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ===== CATEGORY FILTER =====
+function filterCat(cat, el) {
+  // Update tabs
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  // Filter cards
+  const cards = document.querySelectorAll('#servicesGrid .service-card:not(.add-card)');
+  let visible = 0;
+  cards.forEach(card => {
+    const match = cat === 'all' || card.dataset.cat === cat;
+    card.style.display = match ? '' : 'none';
+    if (match) visible++;
+  });
+  document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+  // Clear search
+  document.getElementById('mainSearch').value = '';
+  document.getElementById('searchResults').classList.remove('open');
+}
+
+// ===== QUICK CHIP FILTER =====
+function filterByChip(name) {
+  const q = name.toLowerCase();
+  document.getElementById('mainSearch').value = name;
+  document.getElementById('searchSection').scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => filterCardsBySearch(q), 400);
+  showToast('🔍', `Showing results for "${name}"`);
+}
+
+// ===== DYNAMIC SERVICE RENDERING =====
+// ===== DYNAMIC SERVICE RENDERING (UPDATED FOR WHATSAPP) =====
+function openService(serviceName) {
+  const service = ALL_SERVICES.find(s => s.name === serviceName);
+  if (!service) return;
+  
+  // Encodes the specific service name dynamically for the WhatsApp message template
+  const encodedService = encodeURIComponent(serviceName);
+  const whatsappURL = `https://wa.me/923004285424?text=Hello!%20I%20want%20to%20book%20the%20${encodedService}%20service%20on%20Fatafat%20Kam.`;
+
+  const modalContent = document.getElementById('modalDynamicContent');
+  modalContent.innerHTML = `
+    <div class="modal-header">
+      <div class="modal-icon">${service.icon}</div>
+      <div>
+        <div class="modal-cat">${service.cat}</div>
+        <div class="modal-title">${service.name}</div>
+      </div>
+    </div>
+    <div class="modal-desc">
+      Here are the details for <strong>${service.name}</strong>. Our verified professionals will arrive equipped with all necessary tools. Pricing is transparent and depends on the scope of work.<br><br>
+      Estimated arrival: 60 minutes anywhere in Lahore.
+    </div>
+    <div class="modal-action-row">
+      <a href="${whatsappURL}" target="_blank" rel="noopener noreferrer" class="modal-btn" style="background-color: #25D366; color: #ffffff; border-color: #25D366; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none;">
+        💬 Book via WhatsApp
+      </a>
+    </div>
+  `;
+  
+  document.getElementById('serviceModal').classList.add('active');
+  document.body.style.overflow = 'hidden'; // Prevents background scrolling while open
+}
+
+function closeService() {
+  document.getElementById('serviceModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// ===== TOAST NOTIFICATIONS =====
+function showToast(icon, msg) {
+  const wrap = document.getElementById('toastWrap');
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `<span class="toast-icon">${icon}</span><span class="toast-msg">${msg}</span>`;
+  wrap.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('removing');
+    setTimeout(() => toast.remove(), 300);
+  }, 3200);
+}
+
+// ===== INTERSECTION OBSERVER (scroll animations) =====
+const ioOptions = { threshold: 0.12, rootMargin: '0px 0px -40px 0px' };
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      io.unobserve(entry.target);
+    }
+  });
+}, ioOptions);
+document.querySelectorAll('.fade-up, .stagger-children').forEach(el => io.observe(el));
+
+// ===== KEYBOARD SHORTCUT: '/' to focus search =====
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+    e.preventDefault();
+    scrollToSearch();
+  }
+});
+</script>
+
+</body>
+</html>
